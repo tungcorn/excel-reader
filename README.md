@@ -1,18 +1,8 @@
 # ExcelDumperTool
 
-## About
+ExcelDumperTool is a lightweight C# console application designed to read Excel (`.xlsx`) files and dump the contents of a specific worksheet to the console (or a text file) in a structured, plain-text format. 
 
-**ExcelDumperTool** is a specialized utility designed to act as a "Translation Layer" between binary Excel test case files and AI-driven automation workflows. 
-
-In modern automation testing, AI agents often need to read and understand existing test cases stored in spreadsheets to generate corresponding test scripts (e.g., C# Selenium classes). However, `.xlsx` files are binary formats that AI cannot read natively. This tool solves that problem by converting complex Excel data into a clean, structured, and parseable plain-text stream.
-
-### Key Value Propositions:
-- **AI-Ready Output:** Formats cell data into a readable array-like structure (`[Value]`) that LLMs can easily tokenize and analyze.
-- **Structural Integrity:** Preserves critical formatting like manual line breaks (`Alt+Enter`) by encoding them as `\n`.
-- **Intelligent Noise Reduction:** Automatically trims trailing empty columns and skips non-data rows to minimize token usage and focus on actual test content.
-- **Dynamic Identification:** Supports accessing sheets by name or index, allowing for highly flexible automated pipelines.
-
----
+This tool is particularly useful for AI agents or automated pipelines that need to read and parse Excel files without requiring complex programmatic interactions with Excel interop or UI applications.
 
 ## Prerequisites
 
@@ -37,24 +27,36 @@ dotnet run --project <path-to-ExcelDumperTool> -- <path_to_excel_file> <sheet_in
 Assuming your terminal is working within the `ExcelDumperTool` directory:
 
 #### 1. Run by Sheet Keyword/Name
-To read a sheet that contains the name "Thêm hàng hóa", and print the result directly to your terminal:
+To read a sheet that contains the name "Thêm nhóm hàng hóa" (Add Product Group), pass a keyword:
 ```bash
-dotnet run -- "D:\path\to\your\file.xlsx" "Thêm hàng hóa"
+dotnet run -- product-group-management.xlsx "Thêm nhóm"
 ```
 
 #### 2. Run by Sheet Index
-To read the very first sheet in the Excel file (Index `0`), and print the result to the terminal:
+To read a specific sheet by its 0-based index instead of its name:
 ```bash
-dotnet run -- "D:\path\to\your\file.xlsx" 0
+# Read the first sheet
+dotnet run -- product-group-management.xlsx 0
+
+# Read the second sheet
+dotnet run -- product-group-management.xlsx 1
 ```
 
-#### 3. Export Output to a Text File
+#### 3. Run All Sheets (NEW)
+To automatically iterate through and dump **all sheets** in the Excel file, use the keyword **`all`**:
+```bash
+dotnet run -- product-group-management.xlsx all
+```
+*Note: The output of each sheet will be separated by the header `--- DUMPING SHEET: Sheet Name ---` for easier AI parsing.*
+
+
+#### 4. Export Output to a Text File
 If you want to save the dumped data into a text file instead of printing it to the console, use the `>` redirect operator:
 ```bash
 dotnet run -- "D:\path\to\your\file.xlsx" 0 > output.txt
 ```
 
-#### 4. Run From a Different Directory
+#### 5. Run From a Different Directory
 If your terminal is located outside the `ExcelDumperTool` folder (e.g., in the parent project directory), you must specify the project path:
 ```bash
 dotnet run --project ".\ExcelDumperTool" -- "D:\path\to\your\file.xlsx" 0
