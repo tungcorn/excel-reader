@@ -17,7 +17,7 @@ You can run this tool using the .NET CLI. The tool requires two arguments:
 ### Syntax
 
 ```bash
-dotnet run --project <path-to-ExcelDumperTool> -- <path_to_excel_file> <sheet_index_or_keyword>
+dotnet run --project "<ABSOLUTE_PATH_TO_EXCEL_DUMPER_TOOL>" -- <path_to_excel_file> <sheet_index_or_keyword>
 ```
 
 ---
@@ -62,6 +62,11 @@ If your terminal is located outside the `ExcelDumperTool` folder (e.g., in the p
 dotnet run --project ".\ExcelDumperTool" -- "D:\path\to\your\file.xlsx" 0
 ```
 
+#### 6. Comprehensive Example (Recommended for AI Workflows)
+If you are working inside your main test project directory (e.g. `TestProductGroup`) and want to dump *all* sheets into a single text file using an absolute path, use the full project path:
+```bash
+dotnet run --project "<ABSOLUTE_PATH_TO_EXCEL_DUMPER_TOOL>" -- "<ABSOLUTE_PATH_TO_EXCEL_FILE>" all > all_sheets_output.txt
+```
 ## Output Format
 The tool will automatically detect the used range of columns and rows dynamically. It will also strip empty trailing columns. Down-lines (Alt+Enter) within Excel cells are preserved and represented as `\n` characters in the output.
 
