@@ -70,8 +70,8 @@ namespace ExcelDumper
                     int maxRow = sheet.Dimension?.End.Row ?? 1;
                     int maxCol = sheet.Dimension?.End.Column ?? 1;
 
-                    // Tự động sử dụng đúng số cột thực tế có kích thước trong Excel file
-                    // Khống chế an toàn tối đa 50 cột để tránh việc file Excel bị đục chuẩn format (chứa khoảng trắng vô tận)
+                    // Automatically use the correct number of actual columns in the Excel file
+                    // Safely limit to a maximum of 50 columns to avoid Excel files with corrupted format (containing infinite whitespace)
                     maxCol = Math.Min(maxCol, 50); 
 
                     for (int row = 1; row <= maxRow; row++)
@@ -83,7 +83,7 @@ namespace ExcelDumper
                         {
                             var cellValue = sheet.Cells[row, col].Text?.Trim() ?? "";
                             
-                            // Xử lý cả rớt dòng thực sự (\n) và rớt dòng bị escape (\\n hoặc \r) của EPPlus
+                            // Handle both actual line breaks (\n) and escaped line breaks (\\n or \r) from EPPlus
                             cellValue = Regex.Replace(cellValue, @"\r\n?|\n|\\n|\\r", "\\n");
                             
                             if (!string.IsNullOrEmpty(cellValue))
@@ -96,7 +96,7 @@ namespace ExcelDumper
 
                         if (hasDataInRow)
                         {
-                            // Lọc bỏ các cột trống vô nghĩa ở tận cùng bên phải của mỗi dòng
+                            // Filter out meaningless empty columns at the far right of each row
                             int lastNonEmptyIndex = rowCells.FindLastIndex(c => c != "[]");
                             if (lastNonEmptyIndex >= 0)
                             {
